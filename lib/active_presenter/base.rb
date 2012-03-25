@@ -12,7 +12,7 @@ module ActivePresenter
 
     define_model_callbacks :validation, :save
 
-    class_inheritable_accessor :presented
+    class_attribute :presented
     self.presented = {}
 
     # Indicates which models are to be presented by this presenter.
