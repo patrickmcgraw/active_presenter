@@ -39,7 +39,7 @@ module ActivePresenter
           send(t).errors
         end
 
-        self.presented[t] = presented.merge({t => types_and_classes[t]})
+        presented[t] = types_and_classes[t]
       end
     end
 
