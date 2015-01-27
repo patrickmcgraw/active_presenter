@@ -5,7 +5,7 @@ module ActivePresenter
     extend  ActiveModel::Callbacks
     extend  ActiveModel::Naming
     extend  ActiveModel::Translation
-    include ActiveModel::MassAssignmentSecurity
+    include ActiveModel::MassAssignmentSecurity if defined?(ActiveModel::MassAssignmentSecurity)
     include ActiveModel::Conversion
 
     attr_reader :errors
@@ -21,7 +21,7 @@ module ActivePresenter
     #   class SignupPresenter < ActivePresenter::Base
     #     presents :user, :account
     #   end
-    #  
+    #
     # In the above example, :user will (predictably) become User. If you want to override this behaviour, specify the desired types in a hash, as so:
     #
     #   class PresenterWithTwoAddresses < ActivePresenter::Base
@@ -69,7 +69,7 @@ module ActivePresenter
     def self.human_name(options = {}) # :nodoc:
       defaults = self_and_descendants_from_active_record.map do |klass|
         :"#{klass.name.underscore}"
-      end 
+      end
       defaults << self.name.humanize
       I18n.translate(defaults.shift, {:scope => [:activerecord, :models], :count => 1, :default => defaults}.merge(options))
     end
@@ -83,7 +83,7 @@ module ActivePresenter
     #
     # Both forms can also be mixed together: SignupPresenter.new(:user => User.find(1), :user_login => 'james')
     #   In this case, the login attribute will be updated on the user instance provided.
-    # 
+    #
     # If you don't specify an instance, one will be created by calling Model.new
     #
     def initialize(args = {})
@@ -103,7 +103,7 @@ module ActivePresenter
     def attributes=(attrs)
       return if attrs.nil?
 
-      attrs = attrs.stringify_keys      
+      attrs = attrs.stringify_keys
       multi_parameter_attributes = {}
       attrs = sanitize_for_mass_assignment(attrs)
 
@@ -156,7 +156,7 @@ module ActivePresenter
     end
 
     # Save all of the presentables, wrapped in a transaction.
-    # 
+    #
     # Returns true or false based on success.
     #
     def save
@@ -175,7 +175,7 @@ module ActivePresenter
     # Save all of the presentables wrapped in a transaction.
     #
     # Returns true on success, will raise otherwise.
-    # 
+    #
     def save!
       saved = false
       ActiveRecord::Base.transaction do
